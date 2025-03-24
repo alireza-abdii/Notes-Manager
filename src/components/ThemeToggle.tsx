@@ -7,7 +7,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="btn btn-secondary flex items-center gap-2"
+      className="btn flex items-center gap-2 bg-amber-200 text-amber-900 hover:bg-amber-300 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
       aria-label={t('theme.toggle')}
     >
       {isDark ? (

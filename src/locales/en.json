@@ -4,6 +4,8 @@
         "add": "Add Note",
         "edit": "Edit Note",
         "delete": "Delete Note",
+        "save": "Save",
+        "cancel": "Cancel",
         "empty": "No notes yet. Create your first note!",
         "title_placeholder": "Note title",
         "content_placeholder": "Note content",

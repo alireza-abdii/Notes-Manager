@@ -1,17 +1,15 @@
-import { ThemeProvider } from "./contexts/ThemeContext";
-import { Layout } from "./components/Layout";
+import { ThemeProvider } from './contexts/ThemeContext';
+import { Layout } from './components/Layout';
+import { NoteForm } from './features/notes/components/NoteForm';
+import { NoteList } from './features/notes/components/NoteList';
 
 function App() {
   return (
     <ThemeProvider>
       <Layout>
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-            Welcome to Notes Manager
-          </h2>
-          <p className="mt-4 text-gray-600 dark:text-gray-300">
-            Your personal note-taking application
-          </p>
+        <div className="space-y-8">
+          <NoteForm />
+          <NoteList />
         </div>
       </Layout>
     </ThemeProvider>

@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 export interface Note {
   id: string;
@@ -12,7 +12,7 @@ export interface Note {
 
 interface NotesState {
   notes: Note[];
-  addNote: (note: Omit<Note, "id" | "createdAt" | "updatedAt">) => void;
+  addNote: (note: Omit<Note, 'id' | 'createdAt' | 'updatedAt'>) => void;
   updateNote: (id: string, note: Partial<Note>) => void;
   deleteNote: (id: string) => void;
 }
@@ -36,9 +36,7 @@ export const useNotesStore = create<NotesState>()(
       updateNote: (id, note) =>
         set((state) => ({
           notes: state.notes.map((n) =>
-            n.id === id
-              ? { ...n, ...note, updatedAt: new Date().toISOString() }
-              : n
+            n.id === id ? { ...n, ...note, updatedAt: new Date().toISOString() } : n
           ),
         })),
       deleteNote: (id) =>
@@ -47,7 +45,7 @@ export const useNotesStore = create<NotesState>()(
         })),
     }),
     {
-      name: "notes-storage",
+      name: 'notes-storage',
     }
   )
 );

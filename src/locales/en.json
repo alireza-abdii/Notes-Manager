@@ -1,0 +1,22 @@
+{
+    "notes": {
+        "title": "Notes",
+        "add": "Add Note",
+        "edit": "Edit Note",
+        "delete": "Delete Note",
+        "empty": "No notes yet. Create your first note!",
+        "title_placeholder": "Note title",
+        "content_placeholder": "Note content",
+        "tags_placeholder": "Add tags (comma separated)"
+    },
+    "theme": {
+        "toggle": "Toggle theme",
+        "light": "Light Mode",
+        "dark": "Dark Mode"
+    },
+    "settings": {
+        "title": "Settings",
+        "language": "Language",
+        "theme": "Theme"
+    }
+}

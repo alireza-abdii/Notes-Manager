@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Vazir:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,6 +7,10 @@
 @layer base {
   body {
     @apply bg-amber-50 text-amber-900 dark:bg-slate-900 dark:text-slate-100;
+  }
+
+  .font-vazir {
+    font-family: 'Vazir', sans-serif;
   }
 }
 
@@ -22,7 +28,7 @@
   }
 
   .input {
-    @apply w-full rounded-lg border border-amber-300 px-4 py-2 focus:ring-2 focus:ring-amber-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:focus:ring-slate-500;
+    @apply w-full rounded-lg border border-amber-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500 dark:border-slate-700 dark:bg-slate-800 dark:focus:ring-slate-500;
   }
 
   .card {

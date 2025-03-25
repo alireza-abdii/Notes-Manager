@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNotesStore } from '../store/notesStore';
 import type { Note } from '../store/notesStore';
 
@@ -44,72 +45,106 @@ export function NoteList() {
   };
 
   if (notes.length === 0) {
-    return <div className="text-center text-gray-600 dark:text-gray-400">{t('notes.empty')}</div>;
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="rounded-lg bg-amber-50 p-8 text-center text-amber-800 shadow-sm dark:bg-slate-800 dark:text-slate-300"
+      >
+        {t('notes.empty')}
+      </motion.div>
+    );
   }
 
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {notes.map((note) => (
-        <div key={note.id} className="card">
-          {editingNote?.id === note.id ? (
-            <div className="space-y-4">
-              <input
-                type="text"
-                value={editForm.title}
-                onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
-                className="input"
-              />
-              <textarea
-                value={editForm.content}
-                onChange={(e) => setEditForm({ ...editForm, content: e.target.value })}
-                className="input min-h-[100px] resize-y"
-              />
-              <input
-                type="text"
-                value={editForm.tags}
-                onChange={(e) => setEditForm({ ...editForm, tags: e.target.value })}
-                className="input"
-              />
-              <div className="flex gap-2">
-                <button onClick={handleSave} className="btn btn-primary flex-1">
-                  {t('notes.save')}
-                </button>
-                <button onClick={handleCancel} className="btn btn-secondary flex-1">
-                  {t('notes.cancel')}
-                </button>
-              </div>
-            </div>
-          ) : (
-            <>
-              <h3 className="mb-2 text-lg font-semibold">{note.title}</h3>
-              <p className="mb-4 whitespace-pre-wrap">{note.content}</p>
-              {note.tags.length > 0 && (
-                <div className="mb-4 flex flex-wrap gap-2">
-                  {note.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full bg-amber-200 px-2 py-1 text-sm dark:bg-slate-700"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-              <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400">
-                <span>{new Date(note.updatedAt).toLocaleDateString()}</span>
+      <AnimatePresence mode="popLayout">
+        {notes.map((note) => (
+          <motion.div
+            key={note.id}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            transition={{ duration: 0.3 }}
+            layout
+            className="card group overflow-hidden border border-amber-100 hover:shadow-md dark:border-slate-700 dark:hover:shadow-xl dark:hover:shadow-slate-900/20"
+          >
+            {editingNote?.id === note.id ? (
+              <div className="space-y-4">
+                <input
+                  type="text"
+                  value={editForm.title}
+                  onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
+                  className="input"
+                />
+                <textarea
+                  value={editForm.content}
+                  onChange={(e) => setEditForm({ ...editForm, content: e.target.value })}
+                  className="input min-h-[120px] resize-y"
+                />
+                <input
+                  type="text"
+                  value={editForm.tags}
+                  onChange={(e) => setEditForm({ ...editForm, tags: e.target.value })}
+                  className="input"
+                  placeholder={t('notes.tags_placeholder')}
+                />
                 <div className="flex gap-2">
-                  <button onClick={() => handleEdit(note)} className="btn btn-secondary">
-                    {t('notes.edit')}
+                  <button onClick={handleSave} className="btn btn-primary flex-1">
+                    {t('notes.save')}
                   </button>
-                  <button onClick={() => deleteNote(note.id)} className="btn btn-secondary">
-                    {t('notes.delete')}
+                  <button onClick={handleCancel} className="btn btn-secondary flex-1">
+                    {t('notes.cancel')}
                   </button>
                 </div>
               </div>
-            </>
-          )}
-        </div>
-      ))}
+            ) : (
+              <>
+                <h3 className="mb-3 text-lg font-bold text-amber-900 dark:text-slate-100">
+                  {note.title}
+                </h3>
+                <p className="mb-4 whitespace-pre-wrap text-amber-800 dark:text-slate-300">
+                  {note.content}
+                </p>
+                {note.tags.length > 0 && (
+                  <div className="mb-4 flex flex-wrap gap-2">
+                    {note.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full bg-amber-200 px-2.5 py-1 text-xs font-medium text-amber-800 dark:bg-slate-700 dark:text-slate-200"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                <div className="flex justify-between text-sm text-amber-600 dark:text-slate-400">
+                  <span className="font-medium">
+                    {new Date(note.updatedAt).toLocaleDateString()}
+                  </span>
+                  <div className="flex gap-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                    <button
+                      onClick={() => handleEdit(note)}
+                      className="btn-secondary rounded-full p-1.5 text-sm hover:bg-amber-300 dark:hover:bg-slate-600"
+                      aria-label={t('notes.edit')}
+                    >
+                      ✏️
+                    </button>
+                    <button
+                      onClick={() => deleteNote(note.id)}
+                      className="btn-secondary rounded-full p-1.5 text-sm hover:bg-amber-300 dark:hover:bg-slate-600"
+                      aria-label={t('notes.delete')}
+                    >
+                      🗑️
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+          </motion.div>
+        ))}
+      </AnimatePresence>
     </div>
   );
 }

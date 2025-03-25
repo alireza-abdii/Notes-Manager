@@ -1,8 +1,7 @@
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ThemeToggle } from './ThemeToggle';
-import { LanguageToggle } from './LanguageToggle';
 import { useLanguage } from '../contexts/LanguageContext';
+import { SettingsMenu } from './SettingsMenu';
 
 interface LayoutProps {
   children: ReactNode;
@@ -21,8 +20,7 @@ export function Layout({ children }: LayoutProps) {
               {t('notes.title')}
             </h1>
             <div className="flex items-center gap-2">
-              <LanguageToggle />
-              <ThemeToggle />
+              <SettingsMenu />
             </div>
           </div>
         </div>

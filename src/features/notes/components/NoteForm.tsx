@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
 import { useNotesStore } from '../store/notesStore';
 
 export function NoteForm() {
@@ -8,6 +9,7 @@ export function NoteForm() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [tags, setTags] = useState('');
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,55 +28,92 @@ export function NoteForm() {
     setTitle('');
     setContent('');
     setTags('');
+    setIsExpanded(false);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="card mb-8">
-      <div className="space-y-4">
-        <div>
-          <label htmlFor="title" className="mb-2 block text-sm font-medium">
-            {t('notes.title_placeholder')}
-          </label>
-          <input
-            type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="input"
-            required
-          />
-        </div>
+    <motion.div layout transition={{ duration: 0.3 }} className="mb-8">
+      <motion.form
+        onSubmit={handleSubmit}
+        className="card border border-amber-100 dark:border-slate-700"
+        layout
+      >
+        <motion.div layout className="space-y-4">
+          {!isExpanded ? (
+            <div
+              onClick={() => setIsExpanded(true)}
+              className="cursor-pointer rounded-md bg-amber-50 p-4 text-amber-800 hover:bg-amber-100 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+            >
+              <p className="text-center">{t('notes.add')}</p>
+            </div>
+          ) : (
+            <>
+              <div>
+                <label
+                  htmlFor="title"
+                  className="mb-2 block text-sm font-medium text-amber-900 dark:text-slate-200"
+                >
+                  {t('notes.title_placeholder')}
+                </label>
+                <input
+                  type="text"
+                  id="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="input focus:border-amber-500 focus:ring-amber-500 dark:focus:border-slate-500 dark:focus:ring-slate-500"
+                  required
+                  autoFocus
+                />
+              </div>
 
-        <div>
-          <label htmlFor="content" className="mb-2 block text-sm font-medium">
-            {t('notes.content_placeholder')}
-          </label>
-          <textarea
-            id="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            className="input min-h-[100px] resize-y"
-            required
-          />
-        </div>
+              <div>
+                <label
+                  htmlFor="content"
+                  className="mb-2 block text-sm font-medium text-amber-900 dark:text-slate-200"
+                >
+                  {t('notes.content_placeholder')}
+                </label>
+                <textarea
+                  id="content"
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  className="input min-h-[120px] resize-y focus:border-amber-500 focus:ring-amber-500 dark:focus:border-slate-500 dark:focus:ring-slate-500"
+                  required
+                />
+              </div>
 
-        <div>
-          <label htmlFor="tags" className="mb-2 block text-sm font-medium">
-            {t('notes.tags_placeholder')}
-          </label>
-          <input
-            type="text"
-            id="tags"
-            value={tags}
-            onChange={(e) => setTags(e.target.value)}
-            className="input"
-          />
-        </div>
+              <div>
+                <label
+                  htmlFor="tags"
+                  className="mb-2 block text-sm font-medium text-amber-900 dark:text-slate-200"
+                >
+                  {t('notes.tags_placeholder')}
+                </label>
+                <input
+                  type="text"
+                  id="tags"
+                  value={tags}
+                  onChange={(e) => setTags(e.target.value)}
+                  className="input focus:border-amber-500 focus:ring-amber-500 dark:focus:border-slate-500 dark:focus:ring-slate-500"
+                />
+              </div>
 
-        <button type="submit" className="btn btn-primary w-full">
-          {t('notes.add')}
-        </button>
-      </div>
-    </form>
+              <div className="flex gap-2">
+                <button type="submit" className="btn btn-primary flex-1">
+                  {t('notes.add')}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsExpanded(false)}
+                  className="btn btn-secondary"
+                >
+                  {t('notes.cancel')}
+                </button>
+              </div>
+            </>
+          )}
+        </motion.div>
+      </motion.form>
+    </motion.div>
   );
 }

@@ -9,7 +9,10 @@
         "empty": "No notes yet. Create your first note!",
         "title_placeholder": "Note title",
         "content_placeholder": "Note content",
-        "tags_placeholder": "Add tags (comma separated)"
+        "tags_placeholder": "Add tags (comma separated)",
+        "search": "Search notes...",
+        "all_tags": "All Tags",
+        "no_results": "No notes found matching your search"
     },
     "theme": {
         "toggle": "Toggle theme",

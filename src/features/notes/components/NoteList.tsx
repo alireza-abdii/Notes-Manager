@@ -18,7 +18,6 @@ export function NoteList() {
     tags: '',
   });
 
-  // Extract all unique tags from notes
   const allTags = useMemo(() => {
     const tagSet = new Set<string>();
     notes.forEach((note) => {
@@ -27,16 +26,13 @@ export function NoteList() {
     return Array.from(tagSet);
   }, [notes]);
 
-  // Filter notes based on search text and selected tag
   const filteredNotes = useMemo(() => {
     return notes.filter((note) => {
-      // Filter by search text
       const matchesSearch =
         searchText === '' ||
         note.title.toLowerCase().includes(searchText.toLowerCase()) ||
         note.content.toLowerCase().includes(searchText.toLowerCase());
 
-      // Filter by selected tag
       const matchesTag = selectedTag === '' || note.tags.includes(selectedTag);
 
       return matchesSearch && matchesTag;
@@ -73,7 +69,6 @@ export function NoteList() {
 
   return (
     <div className="space-y-6">
-      {/* Search and Filter Section */}
       <div className="flex flex-col gap-4 sm:flex-row">
         <div className="flex-1">
           <div className="relative">
@@ -105,7 +100,6 @@ export function NoteList() {
         </div>
       </div>
 
-      {/* Notes List */}
       {filteredNotes.length === 0 ? (
         <motion.div
           initial={{ opacity: 0 }}

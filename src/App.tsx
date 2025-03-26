@@ -6,7 +6,7 @@ function App() {
   return (
     <Layout>
       <div className="grid gap-6 lg:grid-cols-4">
-        <div className="lg:col-span-1">
+        <div className="flex flex-col items-start lg:col-span-1">
           <NoteForm />
         </div>
         <div className="lg:col-span-3">

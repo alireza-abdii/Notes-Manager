@@ -34,17 +34,18 @@ export function NoteForm() {
     <motion.div layout transition={{ duration: 0.3 }} className="h-full w-full">
       <motion.form
         onSubmit={handleSubmit}
-        className="card h-full border border-amber-100 dark:border-slate-700"
+        className={`card ${isExpanded ? 'w-full' : 'inline-flex'} w-full border border-amber-100 dark:border-slate-700`}
         layout
       >
-        <motion.div layout className="space-y-3">
+        <motion.div layout className={`${isExpanded ? 'w-full space-y-3' : ''} w-full`}>
           {!isExpanded ? (
-            <div
+            <button
+              type="button"
               onClick={() => setIsExpanded(true)}
-              className="cursor-pointer rounded-md bg-amber-50 p-3 text-amber-800 hover:bg-amber-100 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+              className="btn btn-primary w-full py-3"
             >
-              <p className="text-center">{t('notes.add')}</p>
-            </div>
+              {t('notes.add')}
+            </button>
           ) : (
             <>
               <div>

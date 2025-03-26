@@ -24,7 +24,6 @@ export function NoteForm() {
         .filter(Boolean),
     });
 
-    // Reset form
     setTitle('');
     setContent('');
     setTags('');
@@ -32,17 +31,17 @@ export function NoteForm() {
   };
 
   return (
-    <motion.div layout transition={{ duration: 0.3 }} className="mb-8">
+    <motion.div layout transition={{ duration: 0.3 }} className="mb-4 lg:mb-0">
       <motion.form
         onSubmit={handleSubmit}
         className="card border border-amber-100 dark:border-slate-700"
         layout
       >
-        <motion.div layout className="space-y-4">
+        <motion.div layout className="space-y-3">
           {!isExpanded ? (
             <div
               onClick={() => setIsExpanded(true)}
-              className="cursor-pointer rounded-md bg-amber-50 p-4 text-amber-800 hover:bg-amber-100 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+              className="cursor-pointer rounded-md bg-amber-50 p-3 text-amber-800 hover:bg-amber-100 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
             >
               <p className="text-center">{t('notes.add')}</p>
             </div>
@@ -51,7 +50,7 @@ export function NoteForm() {
               <div>
                 <label
                   htmlFor="title"
-                  className="mb-2 block text-sm font-medium text-amber-900 dark:text-slate-200"
+                  className="mb-1 block text-sm font-medium text-amber-900 dark:text-slate-200"
                 >
                   {t('notes.title_placeholder')}
                 </label>
@@ -69,7 +68,7 @@ export function NoteForm() {
               <div>
                 <label
                   htmlFor="content"
-                  className="mb-2 block text-sm font-medium text-amber-900 dark:text-slate-200"
+                  className="mb-1 block text-sm font-medium text-amber-900 dark:text-slate-200"
                 >
                   {t('notes.content_placeholder')}
                 </label>
@@ -77,7 +76,7 @@ export function NoteForm() {
                   id="content"
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  className="input min-h-[120px] resize-y focus:border-amber-500 focus:ring-amber-500 dark:focus:border-slate-500 dark:focus:ring-slate-500"
+                  className="input min-h-[100px] resize-y focus:border-amber-500 focus:ring-amber-500 dark:focus:border-slate-500 dark:focus:ring-slate-500"
                   required
                 />
               </div>
@@ -85,7 +84,7 @@ export function NoteForm() {
               <div>
                 <label
                   htmlFor="tags"
-                  className="mb-2 block text-sm font-medium text-amber-900 dark:text-slate-200"
+                  className="mb-1 block text-sm font-medium text-amber-900 dark:text-slate-200"
                 >
                   {t('notes.tags_placeholder')}
                 </label>

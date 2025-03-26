@@ -5,9 +5,13 @@ import { NoteList } from './features/notes/components/NoteList';
 function App() {
   return (
     <Layout>
-      <div className="space-y-8">
-        <NoteForm />
-        <NoteList />
+      <div className="grid gap-8 lg:grid-cols-[300px,1fr]">
+        <div className="lg:sticky lg:top-20">
+          <NoteForm />
+        </div>
+        <div>
+          <NoteList />
+        </div>
       </div>
     </Layout>
   );

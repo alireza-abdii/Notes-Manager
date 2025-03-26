@@ -70,8 +70,8 @@ export function NoteList() {
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-3 sm:flex-row">
-        <div className="flex-1">
-          <div className="relative">
+        <div>
+          <div className="relative md:w-96">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
               <span className="text-amber-600 dark:text-slate-400">🔍</span>
             </div>

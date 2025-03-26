@@ -37,7 +37,7 @@ export function NoteForm() {
         className="card h-full border border-amber-100 dark:border-slate-700"
         layout
       >
-        <motion.div layout className="h-full space-y-3">
+        <motion.div layout className="space-y-3">
           {!isExpanded ? (
             <div
               onClick={() => setIsExpanded(true)}

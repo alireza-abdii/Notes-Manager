@@ -15,6 +15,7 @@ export function Layout({ children }: LayoutProps) {
     <div
       className={`min-h-screen w-full bg-amber-50 text-amber-900 dark:bg-slate-900 dark:text-slate-100 ${isRTL ? 'font-vazir' : ''}`}
       dir={isRTL ? 'rtl' : 'ltr'}
+      style={{ width: '100vw', maxWidth: '100%' }}
     >
       <header className="sticky top-0 z-10 w-full bg-amber-100 shadow-sm dark:bg-slate-800">
         <div className="w-full px-4 py-4 sm:px-6 lg:px-8">

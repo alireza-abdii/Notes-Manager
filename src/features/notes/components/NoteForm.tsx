@@ -31,13 +31,13 @@ export function NoteForm() {
   };
 
   return (
-    <motion.div layout transition={{ duration: 0.3 }} className="mb-4 lg:mb-0">
+    <motion.div layout transition={{ duration: 0.3 }} className="h-full w-full">
       <motion.form
         onSubmit={handleSubmit}
-        className="card border border-amber-100 dark:border-slate-700"
+        className="card h-full border border-amber-100 dark:border-slate-700"
         layout
       >
-        <motion.div layout className="space-y-3">
+        <motion.div layout className="h-full space-y-3">
           {!isExpanded ? (
             <div
               onClick={() => setIsExpanded(true)}
@@ -59,7 +59,7 @@ export function NoteForm() {
                   id="title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="input focus:border-amber-500 focus:ring-amber-500 dark:focus:border-slate-500 dark:focus:ring-slate-500"
+                  className="input w-full focus:border-amber-500 focus:ring-amber-500 dark:focus:border-slate-500 dark:focus:ring-slate-500"
                   required
                   autoFocus
                 />
@@ -76,7 +76,7 @@ export function NoteForm() {
                   id="content"
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  className="input min-h-[100px] resize-y focus:border-amber-500 focus:ring-amber-500 dark:focus:border-slate-500 dark:focus:ring-slate-500"
+                  className="input min-h-[100px] w-full resize-y focus:border-amber-500 focus:ring-amber-500 dark:focus:border-slate-500 dark:focus:ring-slate-500"
                   required
                 />
               </div>
@@ -93,7 +93,7 @@ export function NoteForm() {
                   id="tags"
                   value={tags}
                   onChange={(e) => setTags(e.target.value)}
-                  className="input focus:border-amber-500 focus:ring-amber-500 dark:focus:border-slate-500 dark:focus:ring-slate-500"
+                  className="input w-full focus:border-amber-500 focus:ring-amber-500 dark:focus:border-slate-500 dark:focus:ring-slate-500"
                 />
               </div>
 

@@ -68,8 +68,8 @@ export function NoteList() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row">
+    <div className="space-y-4">
+      <div className="flex flex-col gap-3 sm:flex-row">
         <div className="flex-1">
           <div className="relative">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -80,7 +80,7 @@ export function NoteList() {
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
               placeholder={t('notes.search')}
-              className="input pl-10 focus:border-amber-500 focus:ring-amber-500 dark:focus:border-slate-500 dark:focus:ring-slate-500"
+              className="input w-full pl-10 focus:border-amber-500 focus:ring-amber-500 dark:focus:border-slate-500 dark:focus:ring-slate-500"
             />
           </div>
         </div>
@@ -88,7 +88,7 @@ export function NoteList() {
           <select
             value={selectedTag}
             onChange={(e) => setSelectedTag(e.target.value)}
-            className="input focus:border-amber-500 focus:ring-amber-500 dark:focus:border-slate-500 dark:focus:ring-slate-500"
+            className="input w-full focus:border-amber-500 focus:ring-amber-500 dark:focus:border-slate-500 dark:focus:ring-slate-500"
           >
             <option value="">{t('notes.all_tags')}</option>
             {allTags.map((tag) => (
@@ -105,12 +105,12 @@ export function NoteList() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="rounded-lg bg-amber-50 p-8 text-center text-amber-800 shadow-sm dark:bg-slate-800 dark:text-slate-300"
+          className="rounded-lg bg-amber-50 p-6 text-center text-amber-800 shadow-sm dark:bg-slate-800 dark:text-slate-300"
         >
           {searchText || selectedTag ? t('notes.no_results') : t('notes.empty')}
         </motion.div>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
           <AnimatePresence mode="popLayout">
             {filteredNotes.map((note) => (
               <motion.div
@@ -123,7 +123,7 @@ export function NoteList() {
                 className="card group overflow-hidden border border-amber-100 hover:shadow-md dark:border-slate-700 dark:hover:shadow-xl dark:hover:shadow-slate-900/20"
               >
                 {editingNote?.id === note.id ? (
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     <input
                       type="text"
                       value={editForm.title}
@@ -133,7 +133,7 @@ export function NoteList() {
                     <textarea
                       value={editForm.content}
                       onChange={(e) => setEditForm({ ...editForm, content: e.target.value })}
-                      className="input min-h-[120px] resize-y"
+                      className="input min-h-[100px] resize-y"
                     />
                     <input
                       type="text"
@@ -153,14 +153,14 @@ export function NoteList() {
                   </div>
                 ) : (
                   <>
-                    <h3 className="mb-3 text-lg font-bold text-amber-900 dark:text-slate-100">
+                    <h3 className="mb-2 text-lg font-bold text-amber-900 dark:text-slate-100">
                       {note.title}
                     </h3>
-                    <p className="mb-4 whitespace-pre-wrap text-amber-800 dark:text-slate-300">
+                    <p className="mb-3 whitespace-pre-wrap text-amber-800 dark:text-slate-300">
                       {note.content}
                     </p>
                     {note.tags.length > 0 && (
-                      <div className="mb-4 flex flex-wrap gap-2">
+                      <div className="mb-3 flex flex-wrap gap-2">
                         {note.tags.map((tag) => (
                           <span
                             key={tag}
@@ -174,8 +174,8 @@ export function NoteList() {
                         ))}
                       </div>
                     )}
-                    <div className="flex justify-between text-sm text-amber-600 dark:text-slate-400">
-                      <span className="font-medium">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-amber-600 dark:text-slate-400">
                         {new Date(note.updatedAt).toLocaleDateString()}
                       </span>
                       <div className="flex gap-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">

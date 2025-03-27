@@ -11,7 +11,6 @@ export function SettingsMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Close menu when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -52,7 +51,6 @@ export function SettingsMenu() {
               </h3>
 
               <div className="space-y-4">
-                {/* Theme Setting */}
                 <div>
                   <p className="mb-2 text-sm font-medium text-amber-900 dark:text-slate-100">
                     {t('settings.theme')}
@@ -63,7 +61,7 @@ export function SettingsMenu() {
                         if (theme === 'dark') toggleTheme();
                         setIsOpen(false);
                       }}
-                      className={`flex-1 rounded-md px-3 py-1.5 text-sm transition-colors ${
+                      className={`flex-1 text-nowrap rounded-md px-3 py-1.5 text-sm transition-colors ${
                         theme === 'light'
                           ? 'bg-amber-200 text-amber-900'
                           : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-300'
@@ -76,7 +74,7 @@ export function SettingsMenu() {
                         if (theme === 'light') toggleTheme();
                         setIsOpen(false);
                       }}
-                      className={`flex-1 rounded-md px-3 py-1.5 text-sm transition-colors ${
+                      className={`flex-1 text-nowrap rounded-md px-3 py-1.5 text-sm transition-colors ${
                         theme === 'dark'
                           ? 'bg-slate-600 text-slate-100'
                           : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-300'

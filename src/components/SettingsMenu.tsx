@@ -1,34 +1,21 @@
-import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Button } from './ui';
+import { useClickOutside, useToggle } from '../hooks';
 
 export function SettingsMenu() {
   const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
   const { language, changeLanguage } = useLanguage();
-  const [isOpen, setIsOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+  const { value: isOpen, toggle: toggleOpen, setFalse: closeMenu } = useToggle(false);
+  const menuRef = useClickOutside<HTMLDivElement>(closeMenu);
 
   return (
     <div className="relative" ref={menuRef}>
       <Button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggleOpen}
         className="flex items-center gap-2 bg-amber-200 text-amber-900 hover:bg-amber-300 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
         aria-label={t('settings.title')}
       >
@@ -60,7 +47,7 @@ export function SettingsMenu() {
                     <button
                       onClick={() => {
                         if (theme === 'dark') toggleTheme();
-                        setIsOpen(false);
+                        closeMenu();
                       }}
                       className={`flex-1 text-nowrap rounded-md px-3 py-1.5 text-sm transition-colors ${
                         theme === 'light'
@@ -73,7 +60,7 @@ export function SettingsMenu() {
                     <button
                       onClick={() => {
                         if (theme === 'light') toggleTheme();
-                        setIsOpen(false);
+                        closeMenu();
                       }}
                       className={`flex-1 text-nowrap rounded-md px-3 py-1.5 text-sm transition-colors ${
                         theme === 'dark'
@@ -95,7 +82,7 @@ export function SettingsMenu() {
                     <button
                       onClick={() => {
                         if (language !== 'en') changeLanguage('en');
-                        setIsOpen(false);
+                        closeMenu();
                       }}
                       className={`flex flex-1 items-center justify-center gap-1 rounded-md px-3 py-1.5 text-sm transition-colors ${
                         language === 'en'
@@ -108,7 +95,7 @@ export function SettingsMenu() {
                     <button
                       onClick={() => {
                         if (language !== 'fa') changeLanguage('fa');
-                        setIsOpen(false);
+                        closeMenu();
                       }}
                       className={`flex flex-1 items-center justify-center gap-1 rounded-md px-3 py-1.5 text-sm transition-colors ${
                         language === 'fa'

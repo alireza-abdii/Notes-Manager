@@ -1,9 +1,10 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNotesStore } from '../store/notesStore';
 import { NoteListSkeleton } from '../../../components/skeletons';
 import { Button, Input, Textarea, Card } from '../../../components/ui';
+import { useNoteFiltering, useNoteForm } from '../../../hooks';
 import type { Note } from '../store/notesStore';
 
 export function NoteList() {
@@ -13,61 +14,37 @@ export function NoteList() {
   const deleteNote = useNotesStore((state) => state.deleteNote);
   const updateNote = useNotesStore((state) => state.updateNote);
   const [editingNote, setEditingNote] = useState<Note | null>(null);
-  const [searchText, setSearchText] = useState('');
-  const [selectedTag, setSelectedTag] = useState('');
-  const [editForm, setEditForm] = useState({
-    title: '',
-    content: '',
-    tags: '',
+
+  // Use filtering hook for search and tag functionality
+  const { searchText, selectedTag, allTags, filteredNotes, updateSearchText, updateSelectedTag } =
+    useNoteFiltering(notes);
+
+  // Use form hook for editing functionality
+  const {
+    formData: editForm,
+    updateField: updateEditField,
+    handleSubmit: handleEditSubmit,
+    resetForm: resetEditForm,
+  } = useNoteForm({
+    onSubmit: async (data) => {
+      if (!editingNote) return;
+      updateNote(editingNote.id, data);
+      setEditingNote(null);
+    },
+    resetOnSubmit: false,
   });
-
-  const allTags = useMemo(() => {
-    const tagSet = new Set<string>();
-    notes.forEach((note) => {
-      note.tags.forEach((tag) => tagSet.add(tag));
-    });
-    return Array.from(tagSet);
-  }, [notes]);
-
-  const filteredNotes = useMemo(() => {
-    return notes.filter((note) => {
-      const matchesSearch =
-        searchText === '' ||
-        note.title.toLowerCase().includes(searchText.toLowerCase()) ||
-        note.content.toLowerCase().includes(searchText.toLowerCase());
-
-      const matchesTag = selectedTag === '' || note.tags.includes(selectedTag);
-
-      return matchesSearch && matchesTag;
-    });
-  }, [notes, searchText, selectedTag]);
 
   const handleEdit = (note: Note) => {
     setEditingNote(note);
-    setEditForm({
-      title: note.title,
-      content: note.content,
-      tags: note.tags.join(', '),
-    });
-  };
-
-  const handleSave = () => {
-    if (!editingNote) return;
-
-    updateNote(editingNote.id, {
-      title: editForm.title.trim(),
-      content: editForm.content.trim(),
-      tags: editForm.tags
-        .split(',')
-        .map((tag) => tag.trim())
-        .filter(Boolean),
-    });
-
-    setEditingNote(null);
+    // Update form with note data
+    updateEditField('title', note.title);
+    updateEditField('content', note.content);
+    updateEditField('tags', note.tags.join(', '));
   };
 
   const handleCancel = () => {
     setEditingNote(null);
+    resetEditForm();
   };
 
   // Show skeleton loading during initial load
@@ -86,7 +63,7 @@ export function NoteList() {
             <Input
               type="text"
               value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
+              onChange={(e) => updateSearchText(e.target.value)}
               placeholder={t('notes.search')}
               className="w-full pl-10 focus:border-amber-500 focus:ring-amber-500 dark:focus:border-slate-500 dark:focus:ring-slate-500"
             />
@@ -95,7 +72,7 @@ export function NoteList() {
         <div>
           <select
             value={selectedTag}
-            onChange={(e) => setSelectedTag(e.target.value)}
+            onChange={(e) => updateSelectedTag(e.target.value)}
             className="block w-full rounded-md border border-amber-200 bg-white px-3 py-2 text-amber-900 shadow-sm focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:focus:border-slate-500 dark:focus:ring-slate-500"
           >
             <option value="">{t('notes.all_tags')}</option>
@@ -130,79 +107,79 @@ export function NoteList() {
                 layout
               >
                 <Card className="group overflow-hidden border border-amber-100 hover:shadow-md dark:border-slate-700 dark:hover:shadow-xl dark:hover:shadow-slate-900/20">
-                {editingNote?.id === note.id ? (
-                  <div className="space-y-3">
-                    <Input
-                      type="text"
-                      value={editForm.title}
-                      onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
-                    />
-                    <Textarea
-                      value={editForm.content}
-                      onChange={(e) => setEditForm({ ...editForm, content: e.target.value })}
-                      className="min-h-[100px] resize-y"
-                    />
-                    <Input
-                      type="text"
-                      value={editForm.tags}
-                      onChange={(e) => setEditForm({ ...editForm, tags: e.target.value })}
-                      placeholder={t('notes.tags_placeholder')}
-                    />
-                    <div className="flex gap-2">
-                      <Button onClick={handleSave} variant="primary" className="flex-1">
-                        {t('notes.save')}
-                      </Button>
-                      <Button onClick={handleCancel} variant="secondary" className="flex-1">
-                        {t('notes.cancel')}
-                      </Button>
+                  {editingNote?.id === note.id ? (
+                    <div className="space-y-3">
+                      <Input
+                        type="text"
+                        value={editForm.title}
+                        onChange={(e) => updateEditField('title', e.target.value)}
+                      />
+                      <Textarea
+                        value={editForm.content}
+                        onChange={(e) => updateEditField('content', e.target.value)}
+                        className="min-h-[100px] resize-y"
+                      />
+                      <Input
+                        type="text"
+                        value={editForm.tags}
+                        onChange={(e) => updateEditField('tags', e.target.value)}
+                        placeholder={t('notes.tags_placeholder')}
+                      />
+                      <div className="flex gap-2">
+                        <Button onClick={handleEditSubmit} variant="primary" className="flex-1">
+                          {t('notes.save')}
+                        </Button>
+                        <Button onClick={handleCancel} variant="secondary" className="flex-1">
+                          {t('notes.cancel')}
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                ) : (
-                  <>
-                    <h3 className="mb-2 text-lg font-bold text-amber-900 dark:text-slate-100">
-                      {note.title}
-                    </h3>
-                    <p className="mb-3 whitespace-pre-wrap text-amber-800 dark:text-slate-300">
-                      {note.content}
-                    </p>
-                    {note.tags.length > 0 && (
-                      <div className="mb-3 flex flex-wrap gap-2">
-                        {note.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="rounded-full bg-amber-200 px-2.5 py-1 text-xs font-medium text-amber-800 dark:bg-slate-700 dark:text-slate-200"
-                            onClick={() => setSelectedTag(tag)}
-                            role="button"
-                            tabIndex={0}
+                  ) : (
+                    <>
+                      <h3 className="mb-2 text-lg font-bold text-amber-900 dark:text-slate-100">
+                        {note.title}
+                      </h3>
+                      <p className="mb-3 whitespace-pre-wrap text-amber-800 dark:text-slate-300">
+                        {note.content}
+                      </p>
+                      {note.tags.length > 0 && (
+                        <div className="mb-3 flex flex-wrap gap-2">
+                          {note.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="rounded-full bg-amber-200 px-2.5 py-1 text-xs font-medium text-amber-800 dark:bg-slate-700 dark:text-slate-200"
+                              onClick={() => updateSelectedTag(tag)}
+                              role="button"
+                              tabIndex={0}
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-amber-600 dark:text-slate-400">
+                          {new Date(note.updatedAt).toLocaleDateString()}
+                        </span>
+                        <div className="flex gap-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                          <button
+                            onClick={() => handleEdit(note)}
+                            className="btn-secondary rounded-full p-1.5 text-sm hover:bg-amber-300 dark:hover:bg-slate-600"
+                            aria-label={t('notes.edit')}
                           >
-                            {tag}
-                          </span>
-                        ))}
+                            ✏️
+                          </button>
+                          <button
+                            onClick={() => deleteNote(note.id)}
+                            className="btn-secondary rounded-full p-1.5 text-sm hover:bg-amber-300 dark:hover:bg-slate-600"
+                            aria-label={t('notes.delete')}
+                          >
+                            🗑️
+                          </button>
+                        </div>
                       </div>
-                    )}
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-amber-600 dark:text-slate-400">
-                        {new Date(note.updatedAt).toLocaleDateString()}
-                      </span>
-                      <div className="flex gap-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                        <button
-                          onClick={() => handleEdit(note)}
-                          className="btn-secondary rounded-full p-1.5 text-sm hover:bg-amber-300 dark:hover:bg-slate-600"
-                          aria-label={t('notes.edit')}
-                        >
-                          ✏️
-                        </button>
-                        <button
-                          onClick={() => deleteNote(note.id)}
-                          className="btn-secondary rounded-full p-1.5 text-sm hover:bg-amber-300 dark:hover:bg-slate-600"
-                          aria-label={t('notes.delete')}
-                        >
-                          🗑️
-                        </button>
-                      </div>
-                    </div>
-                  </>
-                )}
+                    </>
+                  )}
                 </Card>
               </motion.div>
             ))}

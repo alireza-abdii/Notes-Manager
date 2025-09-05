@@ -2,11 +2,13 @@ import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNotesStore } from '../store/notesStore';
+import { NoteListSkeleton } from '../../../components/skeletons';
 import type { Note } from '../store/notesStore';
 
 export function NoteList() {
   const { t } = useTranslation();
   const notes = useNotesStore((state) => state.notes);
+  const isLoading = useNotesStore((state) => state.isLoading);
   const deleteNote = useNotesStore((state) => state.deleteNote);
   const updateNote = useNotesStore((state) => state.updateNote);
   const [editingNote, setEditingNote] = useState<Note | null>(null);
@@ -66,6 +68,11 @@ export function NoteList() {
   const handleCancel = () => {
     setEditingNote(null);
   };
+
+  // Show skeleton loading during initial load
+  if (isLoading) {
+    return <NoteListSkeleton count={6} />;
+  }
 
   return (
     <div className="space-y-4">

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useNotesStore } from '../store/notesStore';
+import { NoteFormSkeleton } from '../../../components/skeletons';
 
 export function NoteForm() {
   const { t } = useTranslation();
@@ -10,10 +11,16 @@ export function NoteForm() {
   const [content, setContent] = useState('');
   const [tags, setTags] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim() || !content.trim()) return;
+
+    setIsSubmitting(true);
+
+    // Simulate brief loading state for better UX
+    await new Promise((resolve) => setTimeout(resolve, 300));
 
     addNote({
       title: title.trim(),
@@ -28,7 +35,13 @@ export function NoteForm() {
     setContent('');
     setTags('');
     setIsExpanded(false);
+    setIsSubmitting(false);
   };
+
+  // Show skeleton during form submission
+  if (isSubmitting) {
+    return <NoteFormSkeleton />;
+  }
 
   return (
     <motion.div layout transition={{ duration: 0.3 }} className="h-full w-full">

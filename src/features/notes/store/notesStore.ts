@@ -12,15 +12,18 @@ export interface Note {
 
 interface NotesState {
   notes: Note[];
+  isLoading: boolean;
   addNote: (note: Omit<Note, 'id' | 'createdAt' | 'updatedAt'>) => void;
   updateNote: (id: string, note: Partial<Note>) => void;
   deleteNote: (id: string) => void;
+  setLoading: (loading: boolean) => void;
 }
 
 export const useNotesStore = create<NotesState>()(
   persist(
     (set) => ({
       notes: [],
+      isLoading: true,
       addNote: (note) =>
         set((state) => ({
           notes: [
@@ -43,9 +46,16 @@ export const useNotesStore = create<NotesState>()(
         set((state) => ({
           notes: state.notes.filter((n) => n.id !== id),
         })),
+      setLoading: (loading) => set({ isLoading: loading }),
     }),
     {
       name: 'notes-storage',
+      onRehydrateStorage: () => (state) => {
+        // Set loading to false after rehydration is complete
+        if (state) {
+          state.setLoading(false);
+        }
+      },
     }
   )
 );

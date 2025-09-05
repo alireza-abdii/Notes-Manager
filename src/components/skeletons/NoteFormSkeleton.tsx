@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion';
+import { Card } from '../ui';
 
 export function NoteFormSkeleton() {
   return (
     <motion.div layout transition={{ duration: 0.3 }} className="h-full w-full">
-      <div className="card w-full border border-amber-100 dark:border-slate-700">
+      <Card className="w-full border border-amber-100 dark:border-slate-700">
         <div className="w-full space-y-3">
           {/* Title field skeleton */}
           <div>
@@ -29,7 +30,7 @@ export function NoteFormSkeleton() {
             <div className="h-10 w-20 animate-pulse rounded-md bg-amber-200 dark:bg-slate-600" />
           </div>
         </div>
-      </div>
+      </Card>
     </motion.div>
   );
 }

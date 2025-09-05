@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNotesStore } from '../store/notesStore';
 import { NoteListSkeleton } from '../../../components/skeletons';
+import { Button, Input, Textarea, Card } from '../../../components/ui';
 import type { Note } from '../store/notesStore';
 
 export function NoteList() {
@@ -82,12 +83,12 @@ export function NoteList() {
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
               <span className="text-amber-600 dark:text-slate-400">🔍</span>
             </div>
-            <input
+            <Input
               type="text"
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
               placeholder={t('notes.search')}
-              className="input w-full pl-10 focus:border-amber-500 focus:ring-amber-500 dark:focus:border-slate-500 dark:focus:ring-slate-500"
+              className="w-full pl-10 focus:border-amber-500 focus:ring-amber-500 dark:focus:border-slate-500 dark:focus:ring-slate-500"
             />
           </div>
         </div>
@@ -95,7 +96,7 @@ export function NoteList() {
           <select
             value={selectedTag}
             onChange={(e) => setSelectedTag(e.target.value)}
-            className="input w-full focus:border-amber-500 focus:ring-amber-500 dark:focus:border-slate-500 dark:focus:ring-slate-500"
+            className="block w-full rounded-md border border-amber-200 bg-white px-3 py-2 text-amber-900 shadow-sm focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:focus:border-slate-500 dark:focus:ring-slate-500"
           >
             <option value="">{t('notes.all_tags')}</option>
             {allTags.map((tag) => (
@@ -127,35 +128,33 @@ export function NoteList() {
                 exit={{ opacity: 0, scale: 0.8, y: 20 }}
                 transition={{ duration: 0.3 }}
                 layout
-                className="card group overflow-hidden border border-amber-100 hover:shadow-md dark:border-slate-700 dark:hover:shadow-xl dark:hover:shadow-slate-900/20"
               >
+                <Card className="group overflow-hidden border border-amber-100 hover:shadow-md dark:border-slate-700 dark:hover:shadow-xl dark:hover:shadow-slate-900/20">
                 {editingNote?.id === note.id ? (
                   <div className="space-y-3">
-                    <input
+                    <Input
                       type="text"
                       value={editForm.title}
                       onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
-                      className="input"
                     />
-                    <textarea
+                    <Textarea
                       value={editForm.content}
                       onChange={(e) => setEditForm({ ...editForm, content: e.target.value })}
-                      className="input min-h-[100px] resize-y"
+                      className="min-h-[100px] resize-y"
                     />
-                    <input
+                    <Input
                       type="text"
                       value={editForm.tags}
                       onChange={(e) => setEditForm({ ...editForm, tags: e.target.value })}
-                      className="input"
                       placeholder={t('notes.tags_placeholder')}
                     />
                     <div className="flex gap-2">
-                      <button onClick={handleSave} className="btn btn-primary flex-1">
+                      <Button onClick={handleSave} variant="primary" className="flex-1">
                         {t('notes.save')}
-                      </button>
-                      <button onClick={handleCancel} className="btn btn-secondary flex-1">
+                      </Button>
+                      <Button onClick={handleCancel} variant="secondary" className="flex-1">
                         {t('notes.cancel')}
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 ) : (
@@ -204,6 +203,7 @@ export function NoteList() {
                     </div>
                   </>
                 )}
+                </Card>
               </motion.div>
             ))}
           </AnimatePresence>

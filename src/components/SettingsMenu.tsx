@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import { Button } from './ui';
 
 export function SettingsMenu() {
   const { t } = useTranslation();
@@ -26,14 +27,14 @@ export function SettingsMenu() {
 
   return (
     <div className="relative" ref={menuRef}>
-      <button
+      <Button
         onClick={() => setIsOpen(!isOpen)}
-        className="btn flex items-center gap-2 bg-amber-200 text-amber-900 hover:bg-amber-300 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
+        className="flex items-center gap-2 bg-amber-200 text-amber-900 hover:bg-amber-300 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
         aria-label={t('settings.title')}
       >
         <span className="text-lg">⚙️</span>
         <span className="hidden sm:inline">{t('settings.title')}</span>
-      </button>
+      </Button>
 
       <AnimatePresence>
         {isOpen && (

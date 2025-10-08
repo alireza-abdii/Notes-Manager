@@ -12,10 +12,6 @@ interface UseNoteFormOptions {
   resetOnSubmit?: boolean;
 }
 
-/**
- * Custom hook for managing note form state and operations
- * Handles form data, validation, submission, and reset functionality
- */
 export function useNoteForm(options: UseNoteFormOptions = {}) {
   const { initialValues = {}, onSubmit, resetOnSubmit = true } = options;
 
@@ -27,7 +23,6 @@ export function useNoteForm(options: UseNoteFormOptions = {}) {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Helper function to process tags from string to array
   const processTags = useCallback((tagString: string): string[] => {
     return tagString
       .split(',')
@@ -35,12 +30,10 @@ export function useNoteForm(options: UseNoteFormOptions = {}) {
       .filter(Boolean);
   }, []);
 
-  // Update individual form fields
   const updateField = useCallback((field: keyof NoteFormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   }, []);
 
-  // Reset form to initial values
   const resetForm = useCallback(() => {
     setFormData({
       title: initialValues.title || '',
@@ -49,7 +42,6 @@ export function useNoteForm(options: UseNoteFormOptions = {}) {
     });
   }, [initialValues]);
 
-  // Handle form submission
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -76,7 +68,6 @@ export function useNoteForm(options: UseNoteFormOptions = {}) {
     }
   }, [formData, onSubmit, resetOnSubmit, resetForm, processTags]);
 
-  // Validation
   const isValid = formData.title.trim() !== '' && formData.content.trim() !== '';
 
   return {

@@ -11,17 +11,16 @@ export function NoteForm() {
   const { value: isExpanded, setTrue: expandForm, setFalse: collapseForm } = useToggle(false);
   const { withLoading, isLoading: isSubmitting } = useLoadingState();
 
-  const { formData, updateField, handleSubmit, resetForm } = useNoteForm({
+  const { formData, updateField, handleSubmit } = useNoteForm({
     onSubmit: async (data) => {
       await withLoading(async () => {
         addNote(data);
         collapseForm();
-      }, 300); // 300ms minimum loading time for better UX
+      }, 300); 
     },
     resetOnSubmit: true,
   });
 
-  // Show skeleton during form submission
   if (isSubmitting) {
     return <NoteFormSkeleton />;
   }

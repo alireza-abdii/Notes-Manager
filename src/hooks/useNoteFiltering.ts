@@ -1,15 +1,10 @@
 import { useMemo, useState, useCallback } from 'react';
 import type { Note } from '../features/notes/store/notesStore';
 
-/**
- * Custom hook for filtering and searching notes
- * Handles search text, tag filtering, and provides filtered results
- */
 export function useNoteFiltering(notes: Note[]) {
   const [searchText, setSearchText] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
 
-  // Extract all unique tags from notes
   const allTags = useMemo(() => {
     const tagSet = new Set<string>();
     notes.forEach((note) => {
@@ -18,7 +13,6 @@ export function useNoteFiltering(notes: Note[]) {
     return Array.from(tagSet);
   }, [notes]);
 
-  // Filter notes based on search text and selected tag
   const filteredNotes = useMemo(() => {
     return notes.filter((note) => {
       const matchesSearch =
@@ -32,18 +26,15 @@ export function useNoteFiltering(notes: Note[]) {
     });
   }, [notes, searchText, selectedTag]);
 
-  // Clear all filters
   const clearFilters = useCallback(() => {
     setSearchText('');
     setSelectedTag('');
   }, []);
 
-  // Set search text with debouncing option
   const updateSearchText = useCallback((text: string) => {
     setSearchText(text);
   }, []);
 
-  // Set selected tag
   const updateSelectedTag = useCallback((tag: string) => {
     setSelectedTag(tag);
   }, []);
